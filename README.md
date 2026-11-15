@@ -1,4 +1,4 @@
-# Bliss
+# Browse
 
 A first version of a local Firefox browser environment for Ubuntu Server
 26.04 / 26.04.1 amd64. It uses Mozilla's Firefox snap, Xorg, and Openbox.

@@ -1,0 +1,7 @@
+# Generated release archives
+*.tar.gz
+*.zip
+*.sha256
+
+# Local operating system files
+.DS_Store

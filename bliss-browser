@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+fail() { echo "$*" >&2; exit 1; }
+(( EUID != 0 )) || fail 'Launch as your normal user, without sudo.'
+[[ -z ${SSH_CONNECTION:-} && -z ${SSH_TTY:-} ]] || fail 'Use the keyboard and monitor connected to the Ubuntu machine.'
+[[ -z ${DISPLAY:-} && -z ${WAYLAND_DISPLAY:-} ]] || fail 'A graphical session is already active. Launch Firefox there.'
+console=$(tty) || fail 'Run from a local text console.'
+[[ $console =~ ^/dev/tty([0-9]+)$ ]] || fail 'Run from a local text console, such as Ctrl+Alt+F3.'
+vt=${BASH_REMATCH[1]}
+(( $# <= 1 )) || fail 'Usage: bliss-browser [https://example.com]'
+if (( $# == 1 )); then
+    case $1 in
+        https://*|http://*|about:blank) ;;
+        *) fail 'Use a full http:// or https:// address, or about:blank.' ;;
+    esac
+fi
+for program in startx systemctl dbus-update-activation-environment openbox; do
+    command -v "$program" >/dev/null || fail 'Missing a dependency. Run install.sh first.'
+done
+[[ -x /snap/bin/firefox ]] || fail 'Firefox is missing. Run install.sh first.'
+[[ -x /usr/local/lib/bliss-browser/session.sh ]] || fail 'The browser session is missing. Run install.sh first.'
+state_dir=${XDG_STATE_HOME:-$HOME/.local/state}/bliss-browser
+mkdir -p -- "$state_dir"
+chmod 700 "$state_dir"
+echo "Starting Firefox. Close all Firefox windows to return here. Log: $state_dir/session.log"
+if startx /usr/local/lib/bliss-browser/session.sh "$@" -- :0 "vt$vt" -keeptty -nolisten tcp >"$state_dir/session.log" 2>&1; then
+    echo 'Browser session ended.'
+else
+    echo "Browser session failed. Recent log output:" >&2
+    tail -n 40 "$state_dir/session.log" >&2
+    exit 1
+fi

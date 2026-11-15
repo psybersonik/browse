@@ -10,11 +10,11 @@ Finish the normal Ubuntu Server installation, reboot, and sign in using the
 machine's connected keyboard and monitor. Internet access and a user with
 sudo access are required. Copy this folder onto that machine, using a USB
 drive or a file transfer. If using the release archive, copy
-`bliss-browser-0.1.1.tar.gz` to your Ubuntu home folder and run:
+`bliss-0.1.2.tar.gz` to your Ubuntu home folder and run:
 
 ```bash
-tar -xzf bliss-browser-0.1.1.tar.gz
-cd bliss-browser-0.1.1
+tar -xzf bliss-0.1.2.tar.gz
+cd bliss-0.1.2
 ```
 
 From the extracted folder, install and launch:
@@ -25,11 +25,17 @@ sudo reboot
 ```
 
 After rebooting, log in at the machine's keyboard and monitor and run
-`bliss-browser`. On subsequent runs, no installation or reboot is needed.
+`bliss`. On subsequent runs, no installation or reboot is needed.
 
 Version 0.1.1 fixes Firefox Snap startup by using the systemd login user bus
 instead of creating a separate D-Bus session. To update 0.1.0, extract this
 archive, rerun its installer, and reboot once. Existing browsing data is kept.
+
+Version 0.1.2 renames the launch command to `bliss`. Rerun the installer from
+this version to install the new command on an existing machine.
+
+When cloning the GitHub repository, enter the cloned `bliss` folder and run
+`bash install.sh` directly; archive extraction is unnecessary.
 
 The installer downloads Ubuntu packages and Mozilla's Firefox snap. It enables
 Ubuntu's Universe repository and the snap service. It can be rerun if a download
@@ -39,7 +45,7 @@ administrative access only for installation steps.
 Optionally open a particular page:
 
 ```bash
-bliss-browser https://www.mozilla.org
+bliss https://www.mozilla.org
 ```
 
 ## Use
@@ -75,7 +81,7 @@ installation and graphical session have not been tested here.
 ## Remove the launcher
 
 ```bash
-sudo rm /usr/local/bin/bliss-browser
+sudo rm /usr/local/bin/bliss
 sudo rm /usr/local/lib/bliss-browser/session.sh
 sudo rmdir /usr/local/lib/bliss-browser
 ```

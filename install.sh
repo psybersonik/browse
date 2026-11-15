@@ -15,7 +15,7 @@ if [[ ${ID:-} != ubuntu || ${VERSION_ID:-} != 26.04 ]]; then
     exit 1
 fi
 source_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
-for script in bliss-browser session.sh; do
+for script in bliss session.sh; do
     [[ -r "$source_dir/$script" ]] || { echo "Missing $script" >&2; exit 1; }
 done
 sudo -v
@@ -33,5 +33,5 @@ if ! snap list firefox >/dev/null 2>&1; then
 fi
 sudo install -d -m 755 /usr/local/lib/bliss-browser
 sudo install -m 755 "$source_dir/session.sh" /usr/local/lib/bliss-browser/session.sh
-sudo install -m 755 "$source_dir/bliss-browser" /usr/local/bin/bliss-browser
-echo 'Installed. Reboot once, log in at the local text console, then run: bliss-browser'
+sudo install -m 755 "$source_dir/bliss" /usr/local/bin/bliss
+echo 'Installed. Reboot once, log in at the local text console, then run: bliss'

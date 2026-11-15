@@ -8,7 +8,7 @@ fail() { echo "$*" >&2; exit 1; }
 console=$(tty) || fail 'Run from a local text console.'
 [[ $console =~ ^/dev/tty([0-9]+)$ ]] || fail 'Run from a local text console, such as Ctrl+Alt+F3.'
 vt=${BASH_REMATCH[1]}
-(( $# <= 1 )) || fail 'Usage: bliss-browser [https://example.com]'
+(( $# <= 1 )) || fail 'Usage: bliss [https://example.com]'
 if (( $# == 1 )); then
     case $1 in
         https://*|http://*|about:blank) ;;
